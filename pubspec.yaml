@@ -14,10 +14,15 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  rxdart: ^0.27.1
+  provider: ^5.0.0
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  network_image_mock: ^2.0.1
 
 flutter:
 
