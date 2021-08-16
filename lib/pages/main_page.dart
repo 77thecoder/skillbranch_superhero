@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:superheroes/blocs/main_bloc.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
+import 'package:superheroes/widgets/favorites.dart';
 import 'package:superheroes/widgets/min_symbols.dart';
 import 'package:superheroes/widgets/no_favorites.dart';
 
@@ -80,6 +81,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loadingError:
           case MainPageState.searchResults:
           case MainPageState.favorites:
+            return Favorites();
           default:
             return Center(
               child: Text(
