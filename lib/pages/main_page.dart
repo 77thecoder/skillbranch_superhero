@@ -4,6 +4,7 @@ import 'package:superheroes/blocs/main_bloc.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
 import 'package:superheroes/widgets/min_symbols.dart';
+import 'package:superheroes/widgets/no_favorites.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -69,6 +70,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loading:
             return LoadingIndicator();
           case MainPageState.noFavorites:
+            return Center(child: NoFavorites());
           case MainPageState.minSymbols:
             return Padding(
               padding: const EdgeInsets.only(top: 134.0),
