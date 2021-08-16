@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:superheroes/blocs/main_bloc.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
+import 'package:superheroes/widgets/min_symbols.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -42,19 +43,12 @@ class MainPageContent extends StatelessWidget {
       children: [
         MainPageStateWidget(),
         Align(
-            alignment: Alignment.bottomCenter,
-            child: ActionButton(
-              text: 'Next state',
-              onTap: () => bloc.nextState(),
-            )
-            // child: GestureDetector(
-            //   onTap: () => bloc.nextState(),
-            //   child: Text(
-            //     "Next state".toUpperCase(),
-            //     style: TextStyle(fontSize: 20, color: Colors.white),
-            //   ),
-            // ),
-            )
+          alignment: Alignment.bottomCenter,
+          child: ActionButton(
+            text: 'Next state',
+            onTap: () => bloc.nextState(),
+          ),
+        )
       ],
     );
   }
@@ -76,6 +70,10 @@ class MainPageStateWidget extends StatelessWidget {
             return LoadingIndicator();
           case MainPageState.noFavorites:
           case MainPageState.minSymbols:
+            return Padding(
+              padding: const EdgeInsets.only(top: 134.0),
+              child: MinSymbols(),
+            );
           case MainPageState.nothingFound:
           case MainPageState.loadingError:
           case MainPageState.searchResults:
