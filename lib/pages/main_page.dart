@@ -46,7 +46,7 @@ class MainPageContent extends StatelessWidget {
     final MainBloc bloc = Provider.of<MainBloc>(context);
     return Stack(
       children: [
-        MainPageStateWidget(),
+        Center(child: MainPageStateWidget()),
         Align(
           alignment: Alignment.bottomCenter,
           child: ActionButton(
@@ -74,7 +74,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loading:
             return LoadingIndicator();
           case MainPageState.noFavorites:
-            return Center(child: NoFavorites());
+            return NoFavorites();
           case MainPageState.minSymbols:
             return Align(
               alignment: Alignment.topCenter,
@@ -84,30 +84,19 @@ class MainPageStateWidget extends StatelessWidget {
               ),
             );
           case MainPageState.nothingFound:
-            return Align(
-              alignment: Alignment.center,
-              child: Center(
-                child: NothingFound(),
-              ),
-            );
+            return NothingFound();
           case MainPageState.loadingError:
-            return Align(
-              alignment: Alignment.center,
-              child: Center(
-                child: LoadingError(),
-              ),
+            return Center(
+              child: LoadingError(),
             );
           case MainPageState.searchResults:
             return Search();
           case MainPageState.favorites:
             return Favorites();
           default:
-            return Align(
-              alignment: Alignment.center,
-              child: Text(
-                state.toString(),
-                style: TextStyle(color: Colors.white),
-              ),
+            return Text(
+              state.toString(),
+              style: TextStyle(color: Colors.white),
             );
         }
       },
