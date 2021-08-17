@@ -4,6 +4,7 @@ import 'package:superheroes/blocs/main_bloc.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
 import 'package:superheroes/widgets/favorites.dart';
+import 'package:superheroes/widgets/loading_error.dart';
 import 'package:superheroes/widgets/min_symbols.dart';
 import 'package:superheroes/widgets/no_favorites.dart';
 import 'package:superheroes/widgets/nothing_found.dart';
@@ -84,6 +85,9 @@ class MainPageStateWidget extends StatelessWidget {
               child: NothingFound(),
             );
           case MainPageState.loadingError:
+            return Center(
+              child: LoadingError(),
+            );
           case MainPageState.searchResults:
             return Search();
           case MainPageState.favorites:
