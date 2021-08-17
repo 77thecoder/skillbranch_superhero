@@ -5,7 +5,10 @@ import 'package:superheroes/widgets/action_button.dart';
 class SuperheroPage extends StatelessWidget {
   final String name;
 
-  const SuperheroPage({Key? key, required this.name}) : super(key: key);
+  const SuperheroPage({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +30,14 @@ class SuperheroPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.center,
+        Center(
           child: Text(
             name,
             style: TextStyle(
-                color: SuperheroesColors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600),
+              color: SuperheroesColors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         Align(
