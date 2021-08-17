@@ -6,6 +6,7 @@ import 'package:superheroes/widgets/action_button.dart';
 import 'package:superheroes/widgets/favorites.dart';
 import 'package:superheroes/widgets/min_symbols.dart';
 import 'package:superheroes/widgets/no_favorites.dart';
+import 'package:superheroes/widgets/nothing_found.dart';
 import 'package:superheroes/widgets/search.dart';
 
 class MainPage extends StatefulWidget {
@@ -79,6 +80,9 @@ class MainPageStateWidget extends StatelessWidget {
               child: MinSymbols(),
             );
           case MainPageState.nothingFound:
+            return Center(
+              child: NothingFound(),
+            );
           case MainPageState.loadingError:
           case MainPageState.searchResults:
             return Search();
