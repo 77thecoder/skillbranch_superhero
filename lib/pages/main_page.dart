@@ -51,7 +51,7 @@ class MainPageContent extends StatelessWidget {
             text: 'Next state',
             onTap: () => bloc.nextState(),
           ),
-        )
+        ),
       ],
     );
   }
