@@ -8,19 +8,14 @@ class NothingFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InfoWithButton(
-          title: 'Nothing Found',
-          subtitle: 'Search for something else',
-          buttonText: 'Search',
-          assetImage: 'assets/images/hulk.png',
-          imageHeight: 119,
-          imageWidth: 108,
-          imageTopPadding: 9,
-        ),
-      ],
+    return InfoWithButton(
+      title: 'Nothing Found',
+      subtitle: 'Search for something else',
+      buttonText: 'Search',
+      assetImage: 'assets/images/hulk.png',
+      imageHeight: 119,
+      imageWidth: 108,
+      imageTopPadding: 9,
     );
   }
 }

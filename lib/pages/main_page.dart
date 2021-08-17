@@ -76,24 +76,34 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.noFavorites:
             return Center(child: NoFavorites());
           case MainPageState.minSymbols:
-            return Padding(
-              padding: const EdgeInsets.only(top: 134.0),
-              child: MinSymbols(),
+            return Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 110.0),
+                child: MinSymbols(),
+              ),
             );
           case MainPageState.nothingFound:
-            return Center(
-              child: NothingFound(),
+            return Align(
+              alignment: Alignment.center,
+              child: Center(
+                child: NothingFound(),
+              ),
             );
           case MainPageState.loadingError:
-            return Center(
-              child: LoadingError(),
+            return Align(
+              alignment: Alignment.center,
+              child: Center(
+                child: LoadingError(),
+              ),
             );
           case MainPageState.searchResults:
             return Search();
           case MainPageState.favorites:
             return Favorites();
           default:
-            return Center(
+            return Align(
+              alignment: Alignment.center,
               child: Text(
                 state.toString(),
                 style: TextStyle(color: Colors.white),

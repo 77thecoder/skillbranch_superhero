@@ -28,7 +28,6 @@ class InfoWithButton extends StatelessWidget {
       children: [
         Stack(
           children: [
-            SizedBox(width: 108, height: 128),
             Container(
               width: 108,
               height: 108,
@@ -37,12 +36,12 @@ class InfoWithButton extends StatelessWidget {
                 color: SuperheroesColors.blue,
               ),
             ),
-            Positioned(
-              top: imageTopPadding,
-              child: SizedBox(
+            Padding(
+              padding: EdgeInsets.only(top: imageTopPadding),
+              child: Image.asset(
+                assetImage,
                 width: imageWidth,
                 height: imageHeight,
-                child: Image.asset('assets/images/hulk.png'),
               ),
             ),
           ],

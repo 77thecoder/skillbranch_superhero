@@ -8,21 +8,24 @@ class Favorites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 114),
-          Text(
-            'Your Favorites',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 114),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: Text(
+            'Your favorites',
             style: TextStyle(
                 color: SuperheroesColors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 20),
-          SuperheroCard(
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: SuperheroCard(
             name: 'Batman',
             realName: 'Bruce Wayne',
             imageUrl:
@@ -34,8 +37,11 @@ class Favorites extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 8),
-          SuperheroCard(
+        ),
+        SizedBox(height: 8),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: SuperheroCard(
             name: 'Ironman',
             realName: 'Tony Stark',
             imageUrl:
@@ -47,8 +53,8 @@ class Favorites extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

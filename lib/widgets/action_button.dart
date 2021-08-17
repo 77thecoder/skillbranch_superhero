@@ -15,6 +15,7 @@ class ActionButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           height: 40,
           decoration: BoxDecoration(
             color: SuperheroesColors.blue,
@@ -25,7 +26,7 @@ class ActionButton extends StatelessWidget {
           child: Text(
             text.toUpperCase(),
             style: TextStyle(
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w700,
                 fontSize: 14,
                 color: SuperheroesColors.white),
           ),

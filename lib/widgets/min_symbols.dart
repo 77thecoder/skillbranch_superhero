@@ -6,15 +6,12 @@ class MinSymbols extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Text(
-        'Enter at least 3 symbols',
-        style: TextStyle(
-            color: SuperheroesColors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600),
-      ),
+    return Text(
+      'Enter at least 3 symbols',
+      style: TextStyle(
+          color: SuperheroesColors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w600),
     );
   }
 }
