@@ -6,6 +6,7 @@ import 'package:superheroes/widgets/action_button.dart';
 import 'package:superheroes/widgets/favorites.dart';
 import 'package:superheroes/widgets/min_symbols.dart';
 import 'package:superheroes/widgets/no_favorites.dart';
+import 'package:superheroes/widgets/search.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -80,6 +81,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.nothingFound:
           case MainPageState.loadingError:
           case MainPageState.searchResults:
+            return Search();
           case MainPageState.favorites:
             return Favorites();
           default:
