@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
-import 'package:superheroes/widgets/info_with_button.dart';
 
-class LoadingError extends StatelessWidget {
-  const LoadingError({Key? key}) : super(key: key);
+class InfoWithButton extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String buttonText;
+  final String assetImage;
+  final double imageHeight;
+  final double imageWidth;
+  final double imageTopPadding;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InfoWithButton(
-          title: 'Error happened',
-          subtitle: 'Please try again',
-          buttonText: 'Retry',
-          assetImage: 'assets/images/superman.png',
-          imageHeight: 119,
-          imageWidth: 108,
-          imageTopPadding: 9,
-        ),
-      ],
-    );
-  }
-}
-
-class LogoLoadingError extends StatelessWidget {
-  const LogoLoadingError({Key? key}) : super(key: key);
+  const InfoWithButton({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.buttonText,
+    required this.assetImage,
+    required this.imageHeight,
+    required this.imageWidth,
+    required this.imageTopPadding,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +38,18 @@ class LogoLoadingError extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 9,
+              top: imageTopPadding,
               child: SizedBox(
-                width: 108,
-                height: 119,
-                child: Image.asset('assets/images/superman.png'),
+                width: imageWidth,
+                height: imageHeight,
+                child: Image.asset('assets/images/hulk.png'),
               ),
             ),
           ],
         ),
         SizedBox(height: 20),
         Text(
-          'Error happened',
+          title,
           style: TextStyle(
               color: SuperheroesColors.white,
               fontSize: 32,
@@ -63,7 +57,7 @@ class LogoLoadingError extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          'Please try again'.toUpperCase(),
+          subtitle.toUpperCase(),
           style: TextStyle(
               color: SuperheroesColors.white,
               fontSize: 16,
@@ -71,8 +65,8 @@ class LogoLoadingError extends StatelessWidget {
         ),
         SizedBox(height: 30),
         ActionButton(
-          onTap: () => print('retry'),
-          text: 'Retry',
+          onTap: () => print('search'),
+          text: buttonText,
         ),
       ],
     );
