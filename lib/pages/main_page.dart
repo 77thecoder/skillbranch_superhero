@@ -245,7 +245,7 @@ class Favorites extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 114),
+        SizedBox(height: 90),
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: Text(
