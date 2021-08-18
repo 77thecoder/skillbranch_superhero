@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:superheroes/blocs/main_bloc.dart';
 import 'package:superheroes/pages/superhero_page.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
-import 'package:superheroes/widgets/action_button.dart';
 import 'package:superheroes/widgets/info_with_button.dart';
 import 'package:superheroes/widgets/superhero_card.dart';
 
@@ -74,7 +73,6 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return TextField(
       controller: controller,
       style: TextStyle(
@@ -197,9 +195,11 @@ class SuperheroList extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SuperheroCard(
-                name: item.name,
-                realName: item.realName,
-                imageUrl: item.imageUrl,
+                superhero: SuperheroInfo(
+                  name: item.name,
+                  realName: item.realName,
+                  imageUrl: item.imageUrl,
+                ),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -326,10 +326,12 @@ class Search extends StatelessWidget {
           ),
           SizedBox(height: 20),
           SuperheroCard(
-            name: 'Batman',
-            realName: 'Bruce Wayne',
-            imageUrl:
-                'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+            superhero: SuperheroInfo(
+              name: 'Batman',
+              realName: 'Bruce Wayne',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+            ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -339,10 +341,12 @@ class Search extends StatelessWidget {
           ),
           SizedBox(height: 8),
           SuperheroCard(
-            name: 'Venom',
-            realName: 'Eddie Brock',
-            imageUrl:
-                'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
+            superhero: SuperheroInfo(
+              name: 'Venom',
+              realName: 'Eddie Brock',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
+            ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -379,10 +383,12 @@ class Favorites extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
-            name: 'Batman',
-            realName: 'Bruce Wayne',
-            imageUrl:
-                'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+            superhero: SuperheroInfo(
+              name: 'Batman',
+              realName: 'Bruce Wayne',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+            ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -395,10 +401,12 @@ class Favorites extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
-            name: 'Ironman',
-            realName: 'Tony Stark',
-            imageUrl:
-                'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',
+            superhero: SuperheroInfo(
+              name: 'Ironman',
+              realName: 'Tony Stark',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',
+            ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
