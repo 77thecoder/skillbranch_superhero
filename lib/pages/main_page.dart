@@ -176,6 +176,8 @@ class SuperheroList extends StatelessWidget {
         }
         final List<SuperheroInfo> superheroes = snapshot.data!;
         return ListView.separated(
+          physics: BouncingScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return Padding(

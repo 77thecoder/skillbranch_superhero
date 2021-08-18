@@ -161,10 +161,10 @@ class MainPageStateInfo {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MainPageStateInfo &&
-              runtimeType == other.runtimeType &&
-              searchText == other.searchText &&
-              haveFavorites == other.haveFavorites;
+      other is MainPageStateInfo &&
+          runtimeType == other.runtimeType &&
+          searchText == other.searchText &&
+          haveFavorites == other.haveFavorites;
 
   @override
   int get hashCode => searchText.hashCode ^ haveFavorites.hashCode;
