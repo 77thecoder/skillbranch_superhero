@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
+import 'package:superheroes/model/superhero.dart';
 
 class MainBloc {
   static const minSymbols = 3;
@@ -14,7 +18,9 @@ class MainBloc {
   StreamSubscription? textSubscription;
   StreamSubscription? searchSubscription;
 
-  MainBloc() {
+  http.Client? client;
+
+  MainBloc({this.client}) {
     stateSubject.add(MainPageState.noFavorites);
 
     textSubscription =
@@ -66,11 +72,29 @@ class MainBloc {
       searchedSuperheroesSubject;
 
   Future<List<SuperheroInfo>> search(final String text) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return SuperheroInfo.mocked
-        .where((superheroInfo) =>
-            superheroInfo.name.toLowerCase().contains(text.toLowerCase()))
-        .toList();
+    final token = dotenv.env["SUPERHERO_TOKEN"];
+    final response = await (client ??= http.Client())
+        .get(Uri.parse("https://superheroapi.com/api/$token/search/$text"));
+    final decoded = json.decode(response.body);
+    if (decoded['response'] == 'success') {
+      final List<dynamic> results = decoded['results'];
+      final List<Superhero> superheroes = results
+          .map((rawSuperhero) => Superhero.fromJson(rawSuperhero))
+          .toList();
+      final List<SuperheroInfo> found = superheroes.map((superhero) {
+        return SuperheroInfo(
+          name: superhero.name,
+          realName: superhero.biography.fullName,
+          imageUrl: superhero.image.url,
+        );
+      }).toList();
+      return found;
+    } else if (decoded['response'] == 'error') {
+      if (decoded['error'] == 'character with given name not found') {
+        return [];
+      }
+    }
+    throw Exception("unknown error happened");
   }
 
   Stream<MainPageState> observeMainPageState() => stateSubject;
@@ -106,6 +130,8 @@ class MainBloc {
     currentTextSubject.close();
 
     textSubscription?.cancel();
+
+    client?.close();
   }
 }
 
@@ -129,6 +155,11 @@ class SuperheroInfo {
     required this.realName,
     required this.imageUrl,
   });
+
+  @override
+  String toString() {
+    return 'SuperheroInfo{name: $name, realName: $realName, imageUrl: $imageUrl}';
+  }
 
   @override
   bool operator ==(Object other) =>
