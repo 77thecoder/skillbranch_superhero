@@ -42,7 +42,7 @@ class MainPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        MainPageStateWidget(),
+        Center(child: MainPageStateWidget()),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
           child: SearchWidget(),
@@ -144,12 +144,12 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loadingError:
             return LoadingError();
           case MainPageState.searchResults:
-            return SuperheroList(
+            return SuperheroesList(
               title: "Search results",
               stream: bloc.observeSearchedSuperheroes(),
             );
           case MainPageState.favorites:
-            return SuperheroList(
+            return SuperheroesList(
               title: "Your favorites",
               stream: bloc.observeFavoriteSuperheroes(),
             );
@@ -164,11 +164,11 @@ class MainPageStateWidget extends StatelessWidget {
   }
 }
 
-class SuperheroList extends StatelessWidget {
+class SuperheroesList extends StatelessWidget {
   final String title;
   final Stream<List<SuperheroInfo>> stream;
 
-  const SuperheroList({
+  const SuperheroesList({
     Key? key,
     required this.title,
     required this.stream,
@@ -205,7 +205,7 @@ class SuperheroList extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SuperheroCard(
-                superhero: SuperheroInfo(
+                superheroInfo: SuperheroInfo(
                   name: item.name,
                   realName: item.realName,
                   imageUrl: item.imageUrl,
@@ -336,7 +336,7 @@ class Search extends StatelessWidget {
           ),
           SizedBox(height: 20),
           SuperheroCard(
-            superhero: SuperheroInfo(
+            superheroInfo: SuperheroInfo(
               name: 'Batman',
               realName: 'Bruce Wayne',
               imageUrl:
@@ -351,7 +351,7 @@ class Search extends StatelessWidget {
           ),
           SizedBox(height: 8),
           SuperheroCard(
-            superhero: SuperheroInfo(
+            superheroInfo: SuperheroInfo(
               name: 'Venom',
               realName: 'Eddie Brock',
               imageUrl:
@@ -393,7 +393,7 @@ class Favorites extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
-            superhero: SuperheroInfo(
+            superheroInfo: SuperheroInfo(
               name: 'Batman',
               realName: 'Bruce Wayne',
               imageUrl:
@@ -411,7 +411,7 @@ class Favorites extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
-            superhero: SuperheroInfo(
+            superheroInfo: SuperheroInfo(
               name: 'Ironman',
               realName: 'Tony Stark',
               imageUrl:

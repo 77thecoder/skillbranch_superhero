@@ -67,7 +67,10 @@ class MainBloc {
 
   Future<List<SuperheroInfo>> search(final String text) async {
     await Future.delayed(const Duration(seconds: 1));
-    return SuperheroInfo.mocked;
+    return SuperheroInfo.mocked
+        .where((superheroInfo) =>
+            superheroInfo.name.toLowerCase().contains(text.toLowerCase()))
+        .toList();
   }
 
   Stream<MainPageState> observeMainPageState() => stateSubject;
