@@ -13,11 +13,12 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 117.5, right: 117.5, bottom: 30),
+    return Padding(
+      padding: const EdgeInsets.only(left: 117.5, right: 117.5, bottom: 30),
+      child: GestureDetector(
+        onTap: onTap,
         child: Container(
+          height: 36,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
             color: SuperheroesColors.blue,
