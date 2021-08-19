@@ -47,14 +47,15 @@ class _MainPageState extends State<MainPage> {
 }
 
 class MainPageContent extends StatelessWidget {
+  final FocusNode searchFieldFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(child: MainPageStateWidget()),
+        Center(child: MainPageStateWidget(searchFieldFocusNode: searchFieldFocusNode,)),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-          child: SearchWidget(),
+          child: SearchWidget(searchFieldFocucNode: searchFieldFocusNode,),
         ),
       ],
     );
@@ -62,7 +63,8 @@ class MainPageContent extends StatelessWidget {
 }
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({Key? key}) : super(key: key);
+  final FocusNode searchFieldFocucNode;
+  const SearchWidget({Key? key, required this.searchFieldFocucNode}) : super(key: key);
 
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
@@ -94,6 +96,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: widget.searchFieldFocucNode,
       controller: controller,
       cursorColor: SuperheroesColors.white,
       textCapitalization: TextCapitalization.words,
@@ -141,6 +144,9 @@ class _SearchWidgetState extends State<SearchWidget> {
 }
 
 class MainPageStateWidget extends StatelessWidget {
+  final FocusNode searchFieldFocusNode;
+
+  const MainPageStateWidget({Key? key, required this.searchFieldFocusNode}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
@@ -171,7 +177,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.noFavorites:
             return Stack(
               children: [
-                Center(child: NoFavorites()),
+                Center(child: NoFavorites(searchFieldFocusNode: searchFieldFocusNode)),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child:
@@ -188,7 +194,7 @@ class MainPageStateWidget extends StatelessWidget {
               ),
             );
           case MainPageState.nothingFound:
-            return NothingFound();
+            return NothingFound(searchFieldFocusNode: searchFieldFocusNode,);
           case MainPageState.loadingError:
             return LoadingError();
           case MainPageState.searchResults:
@@ -295,7 +301,8 @@ class LoadingIndicator extends StatelessWidget {
 }
 
 class NoFavorites extends StatelessWidget {
-  const NoFavorites({Key? key}) : super(key: key);
+  final FocusNode searchFieldFocusNode;
+  const NoFavorites({Key? key, required this.searchFieldFocusNode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -307,6 +314,7 @@ class NoFavorites extends StatelessWidget {
       imageHeight: 119,
       imageWidth: 108,
       imageTopPadding: 9,
+      onTap: () => searchFieldFocusNode.requestFocus(),
     );
   }
 }
@@ -327,7 +335,8 @@ class MinSymbols extends StatelessWidget {
 }
 
 class NothingFound extends StatelessWidget {
-  const NothingFound({Key? key}) : super(key: key);
+  final FocusNode searchFieldFocusNode;
+  const NothingFound({Key? key, required this.searchFieldFocusNode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -339,6 +348,7 @@ class NothingFound extends StatelessWidget {
       imageHeight: 119,
       imageWidth: 108,
       imageTopPadding: 9,
+      onTap: () => searchFieldFocusNode.requestFocus(),
     );
   }
 }
@@ -356,6 +366,7 @@ class LoadingError extends StatelessWidget {
       imageHeight: 119,
       imageWidth: 108,
       imageTopPadding: 9,
+      onTap: () {},
     );
   }
 }

@@ -10,6 +10,7 @@ class InfoWithButton extends StatelessWidget {
   final double imageHeight;
   final double imageWidth;
   final double imageTopPadding;
+  final VoidCallback onTap;
 
   const InfoWithButton({
     Key? key,
@@ -20,6 +21,7 @@ class InfoWithButton extends StatelessWidget {
     required this.imageHeight,
     required this.imageWidth,
     required this.imageTopPadding,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,7 @@ class InfoWithButton extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         ActionButton(
-          onTap: () => print('search'),
+          onTap: onTap,
           text: buttonText,
         ),
       ],
