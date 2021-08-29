@@ -256,6 +256,7 @@ class SuperheroesList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SuperheroCard(
                 superheroInfo: SuperheroInfo(
+                  id: item.id,
                   name: item.name,
                   realName: item.realName,
                   imageUrl: item.imageUrl,
@@ -263,7 +264,7 @@ class SuperheroesList extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => SuperheroPage(name: item.name),
+                      builder: (context) => SuperheroPage(id: item.id),
                     ),
                   );
                 },
@@ -393,6 +394,7 @@ class Search extends StatelessWidget {
           SizedBox(height: 20),
           SuperheroCard(
             superheroInfo: SuperheroInfo(
+              id: "70",
               name: 'Batman',
               realName: 'Bruce Wayne',
               imageUrl:
@@ -401,13 +403,14 @@ class Search extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SuperheroPage(name: 'Batman'),
+                builder: (context) => SuperheroPage(id: 'Batman'),
               ),
             ),
           ),
           SizedBox(height: 8),
           SuperheroCard(
             superheroInfo: SuperheroInfo(
+              id: "687",
               name: 'Venom',
               realName: 'Eddie Brock',
               imageUrl:
@@ -416,7 +419,7 @@ class Search extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SuperheroPage(name: 'Venom'),
+                builder: (context) => SuperheroPage(id: 'Venom'),
               ),
             ),
           ),
@@ -450,6 +453,7 @@ class Favorites extends StatelessWidget {
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
             superheroInfo: SuperheroInfo(
+              id: "70",
               name: 'Batman',
               realName: 'Bruce Wayne',
               imageUrl:
@@ -458,7 +462,7 @@ class Favorites extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SuperheroPage(name: 'Batman'),
+                builder: (context) => SuperheroPage(id: 'Batman'),
               ),
             ),
           ),
@@ -468,6 +472,7 @@ class Favorites extends StatelessWidget {
           padding: EdgeInsets.only(left: 16, right: 16),
           child: SuperheroCard(
             superheroInfo: SuperheroInfo(
+              id: "732",
               name: 'Ironman',
               realName: 'Tony Stark',
               imageUrl:
@@ -476,7 +481,7 @@ class Favorites extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SuperheroPage(name: 'Ironman'),
+                builder: (context) => SuperheroPage(id: 'Ironman'),
               ),
             ),
           ),
