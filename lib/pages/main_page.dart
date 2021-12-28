@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   final http.Client? client;
+
   MainPage({Key? key, this.client}) : super(key: key);
 
   @override
@@ -48,14 +49,20 @@ class _MainPageState extends State<MainPage> {
 
 class MainPageContent extends StatelessWidget {
   final FocusNode searchFieldFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(child: MainPageStateWidget(searchFieldFocusNode: searchFieldFocusNode,)),
+        Center(
+            child: MainPageStateWidget(
+          searchFieldFocusNode: searchFieldFocusNode,
+        )),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-          child: SearchWidget(searchFieldFocucNode: searchFieldFocusNode,),
+          child: SearchWidget(
+            searchFieldFocucNode: searchFieldFocusNode,
+          ),
         ),
       ],
     );
@@ -64,7 +71,9 @@ class MainPageContent extends StatelessWidget {
 
 class SearchWidget extends StatefulWidget {
   final FocusNode searchFieldFocucNode;
-  const SearchWidget({Key? key, required this.searchFieldFocucNode}) : super(key: key);
+
+  const SearchWidget({Key? key, required this.searchFieldFocucNode})
+      : super(key: key);
 
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
@@ -146,7 +155,9 @@ class _SearchWidgetState extends State<SearchWidget> {
 class MainPageStateWidget extends StatelessWidget {
   final FocusNode searchFieldFocusNode;
 
-  const MainPageStateWidget({Key? key, required this.searchFieldFocusNode}) : super(key: key);
+  const MainPageStateWidget({Key? key, required this.searchFieldFocusNode})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
@@ -161,30 +172,12 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loading:
             return LoadingIndicator();
           case MainPageState.favorites:
-            return Stack(
-              children: [
-                SuperheroesList(
-                  title: "Your favorites",
-                  stream: bloc.observeFavoriteSuperheroes(),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child:
-                      ActionButton(onTap: bloc.removeFavorite, text: 'Remove'),
-                ),
-              ],
+            return SuperheroesList(
+              title: "Your favorites",
+              stream: bloc.observeFavoriteSuperheroes(),
             );
           case MainPageState.noFavorites:
-            return Stack(
-              children: [
-                Center(child: NoFavorites(searchFieldFocusNode: searchFieldFocusNode)),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child:
-                      ActionButton(onTap: bloc.removeFavorite, text: 'Remove'),
-                ),
-              ],
-            );
+            return NoFavorites(searchFieldFocusNode: searchFieldFocusNode);
           case MainPageState.minSymbols:
             return Align(
               alignment: Alignment.topCenter,
@@ -194,7 +187,9 @@ class MainPageStateWidget extends StatelessWidget {
               ),
             );
           case MainPageState.nothingFound:
-            return NothingFound(searchFieldFocusNode: searchFieldFocusNode,);
+            return NothingFound(
+              searchFieldFocusNode: searchFieldFocusNode,
+            );
           case MainPageState.loadingError:
             return LoadingError();
           case MainPageState.searchResults:
@@ -238,38 +233,10 @@ class SuperheroesList extends StatelessWidget {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 90, bottom: 12),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: SuperheroesColors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 24,
-                  ),
-                ),
-              );
+              return ListTitleWidget(title: title);
             }
             final SuperheroInfo item = superheroes[index - 1];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SuperheroCard(
-                superheroInfo: SuperheroInfo(
-                  id: item.id,
-                  name: item.name,
-                  realName: item.realName,
-                  imageUrl: item.imageUrl,
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SuperheroPage(id: item.id),
-                    ),
-                  );
-                },
-              ),
-            );
+            return ListTile(superhero: item);
           },
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 8);
@@ -277,6 +244,62 @@ class SuperheroesList extends StatelessWidget {
           itemCount: superheroes.length + 1,
         );
       },
+    );
+  }
+}
+
+class ListTile extends StatelessWidget {
+  const ListTile({
+    Key? key,
+    required this.superhero,
+  }) : super(key: key);
+
+  final SuperheroInfo superhero;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SuperheroCard(
+        superheroInfo: SuperheroInfo(
+          id: superhero.id,
+          name: superhero.name,
+          realName: superhero.realName,
+          imageUrl: superhero.imageUrl,
+        ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SuperheroPage(id: superhero.id),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ListTitleWidget extends StatelessWidget {
+  const ListTitleWidget({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          left: 16, right: 16, top: 90, bottom: 12),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: SuperheroesColors.white,
+          fontWeight: FontWeight.w800,
+          fontSize: 24,
+        ),
+      ),
     );
   }
 }
@@ -303,7 +326,9 @@ class LoadingIndicator extends StatelessWidget {
 
 class NoFavorites extends StatelessWidget {
   final FocusNode searchFieldFocusNode;
-  const NoFavorites({Key? key, required this.searchFieldFocusNode}) : super(key: key);
+
+  const NoFavorites({Key? key, required this.searchFieldFocusNode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -337,7 +362,9 @@ class MinSymbols extends StatelessWidget {
 
 class NothingFound extends StatelessWidget {
   final FocusNode searchFieldFocusNode;
-  const NothingFound({Key? key, required this.searchFieldFocusNode}) : super(key: key);
+
+  const NothingFound({Key? key, required this.searchFieldFocusNode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

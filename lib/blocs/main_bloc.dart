@@ -5,14 +5,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:superheroes/exception/api_exception.dart';
+import 'package:superheroes/favorite_superheroes_storage.dart';
 import 'package:superheroes/model/superhero.dart';
 
 class MainBloc {
   static const minSymbols = 3;
 
   final BehaviorSubject<MainPageState> stateSubject = BehaviorSubject();
-  final favoriteSuperheroesSubject =
-      BehaviorSubject<List<SuperheroInfo>>.seeded(SuperheroInfo.mocked);
   final searchedSuperheroesSubject = BehaviorSubject<List<SuperheroInfo>>();
   final currentTextSubject = BehaviorSubject<String>.seeded("");
 
@@ -25,11 +24,11 @@ class MainBloc {
     stateSubject.add(MainPageState.noFavorites);
 
     textSubscription =
-        Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
+        Rx.combineLatest2<String, List<Superhero>, MainPageStateInfo>(
       currentTextSubject
           .distinct()
           .debounceTime(const Duration(milliseconds: 500)),
-      favoriteSuperheroesSubject,
+      FavoriteSuperheroesStorage.getInstance().observeFavoritesSuperHeroes(),
       (searchedText, favorites) =>
           MainPageStateInfo(searchedText, favorites.isNotEmpty),
     ).listen((value) {
@@ -73,7 +72,7 @@ class MainBloc {
   }
 
   Stream<List<SuperheroInfo>> observeFavoriteSuperheroes() =>
-      favoriteSuperheroesSubject;
+      FavoriteSuperheroesStorage.getInstance().observeFavoritesSuperHeroes().map((superheroes) => superheroes.map((superhero) => SuperheroInfo.fromSuperhero(superhero)).toList());
 
   Stream<List<SuperheroInfo>> observeSearchedSuperheroes() =>
       searchedSuperheroesSubject;
@@ -95,12 +94,7 @@ class MainBloc {
           .map((rawSuperhero) => Superhero.fromJson(rawSuperhero))
           .toList();
       final List<SuperheroInfo> found = superheroes.map((superhero) {
-        return SuperheroInfo(
-          id: superhero.id,
-          name: superhero.name,
-          realName: superhero.biography.fullName,
-          imageUrl: superhero.image.url,
-        );
+        return SuperheroInfo.fromSuperhero(superhero);
       }).toList();
       return found;
     } else if (decoded['response'] == 'error') {
@@ -113,18 +107,6 @@ class MainBloc {
   }
 
   Stream<MainPageState> observeMainPageState() => stateSubject;
-
-  void removeFavorite() {
-    final List<SuperheroInfo> currentFavorites =
-        favoriteSuperheroesSubject.value;
-    if (currentFavorites.isEmpty) {
-      favoriteSuperheroesSubject.add(SuperheroInfo.mocked);
-    } else {
-      favoriteSuperheroesSubject.add(
-        currentFavorites.sublist(0, currentFavorites.length - 1),
-      );
-    }
-  }
 
   void nextState() {
     final currentState = stateSubject.value;
@@ -140,11 +122,11 @@ class MainBloc {
 
   void dispose() {
     stateSubject.close();
-    favoriteSuperheroesSubject.close();
     searchedSuperheroesSubject.close();
     currentTextSubject.close();
 
     textSubscription?.cancel();
+    searchSubscription?.cancel();
 
     client?.close();
   }
@@ -172,6 +154,10 @@ class SuperheroInfo {
     required this.realName,
     required this.imageUrl,
   });
+
+  factory SuperheroInfo.fromSuperhero(final Superhero superhero) {
+    return SuperheroInfo(name: superhero.name, id: superhero.id, realName: superhero.biography.fullName, imageUrl: superhero.image.url);
+  }
 
   @override
   String toString() {

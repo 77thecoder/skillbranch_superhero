@@ -9,6 +9,7 @@ import 'package:superheroes/model/powerstats.dart';
 import 'package:superheroes/model/server_image.dart';
 import 'package:superheroes/model/superhero.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
+import 'package:superheroes/resources/superheroes_icons.dart';
 import 'package:superheroes/widgets/action_button.dart';
 import 'package:http/http.dart' as http;
 
@@ -98,6 +99,9 @@ class SuperheroAppBar extends StatelessWidget {
       pinned: true,
       floating: true,
       expandedHeight: 348,
+      actions: [
+        FavoriteButton(),
+      ],
       backgroundColor: SuperheroesColors.background,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
@@ -114,6 +118,34 @@ class SuperheroAppBar extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+    );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<SuperheroBloc>(context, listen: false);
+
+    return StreamBuilder<bool>(
+      stream: bloc.observerIsFavorite(),
+      initialData: false,
+      builder: (context, snapshot) {
+        final favorite = !snapshot.hasData || snapshot.data == null || snapshot.data!;
+        return GestureDetector(
+          onTap: () => favorite ? bloc.removeFromFavorite() : bloc.addToFavorite(),
+          child: Container(
+            width: 52,
+            height: 52,
+            alignment: Alignment.center,
+            child: Image.asset(favorite ? SuperheroesIcons.starFilled : SuperheroesIcons.starEmpty, width: 32, height: 32,),
+          ),
+        );
+      }
     );
   }
 }
