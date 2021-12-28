@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:superheroes/exception/api_exception.dart';
 import 'package:superheroes/favorite_superheroes_storage.dart';
+import 'package:superheroes/model/alignment_info.dart';
 import 'package:superheroes/model/superhero.dart';
 
 class MainBloc {
@@ -17,11 +18,11 @@ class MainBloc {
 
   StreamSubscription? textSubscription;
   StreamSubscription? searchSubscription;
+  StreamSubscription? removeFromFavoriteSubscription;
 
   http.Client? client;
 
   MainBloc({this.client}) {
-    stateSubject.add(MainPageState.noFavorites);
 
     textSubscription =
         Rx.combineLatest2<String, List<Superhero>, MainPageStateInfo>(
@@ -71,8 +72,24 @@ class MainBloc {
     searchForSuperheroes(currentText);
   }
 
+  void removeFromFavorites(final String id) {
+    removeFromFavoriteSubscription?.cancel();
+    removeFromFavoriteSubscription = FavoriteSuperheroesStorage.getInstance()
+        .removeToFavorites(id)
+        .asStream()
+        .listen((event) {
+      print("Removed to favorites: $event");
+    }, onError: (error, stackTrace) {
+      print('Error happened in removeToFavorite: $error, $stackTrace');
+    });
+  }
+
   Stream<List<SuperheroInfo>> observeFavoriteSuperheroes() =>
-      FavoriteSuperheroesStorage.getInstance().observeFavoritesSuperHeroes().map((superheroes) => superheroes.map((superhero) => SuperheroInfo.fromSuperhero(superhero)).toList());
+      FavoriteSuperheroesStorage.getInstance()
+          .observeFavoritesSuperHeroes()
+          .map((superheroes) => superheroes
+              .map((superhero) => SuperheroInfo.fromSuperhero(superhero))
+              .toList());
 
   Stream<List<SuperheroInfo>> observeSearchedSuperheroes() =>
       searchedSuperheroesSubject;
@@ -127,6 +144,7 @@ class MainBloc {
 
     textSubscription?.cancel();
     searchSubscription?.cancel();
+    removeFromFavoriteSubscription?.cancel();
 
     client?.close();
   }
@@ -147,16 +165,24 @@ class SuperheroInfo {
   final String id;
   final String realName;
   final String imageUrl;
+  final AlignmentInfo? alignmentInfo;
 
   const SuperheroInfo({
     required this.name,
     required this.id,
     required this.realName,
     required this.imageUrl,
+    required this.alignmentInfo,
   });
 
   factory SuperheroInfo.fromSuperhero(final Superhero superhero) {
-    return SuperheroInfo(name: superhero.name, id: superhero.id, realName: superhero.biography.fullName, imageUrl: superhero.image.url);
+    return SuperheroInfo(
+      name: superhero.name,
+      id: superhero.id,
+      realName: superhero.biography.fullName,
+      imageUrl: superhero.image.url,
+      alignmentInfo: superhero.biography.alignmentInfo,
+    );
   }
 
   @override
@@ -175,29 +201,8 @@ class SuperheroInfo {
           imageUrl == other.imageUrl;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ realName.hashCode ^ imageUrl.hashCode;
-
-  static const mocked = [
-    SuperheroInfo(
-      id: "70",
-      name: 'Batman',
-      realName: "Bruce Wayne",
-      imageUrl:
-          'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
-    ),
-    SuperheroInfo(
-      id: "732",
-      name: 'Ironman',
-      realName: "Tony Stark",
-      imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',
-    ),
-    SuperheroInfo(
-      id: "687",
-      name: 'Venom',
-      realName: "Eddie Brock",
-      imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
-    ),
-  ];
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ realName.hashCode ^ imageUrl.hashCode;
 }
 
 class MainPageStateInfo {

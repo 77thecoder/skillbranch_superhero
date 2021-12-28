@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:superheroes/blocs/main_bloc.dart';
+import 'package:superheroes/model/alignment_info.dart';
 import 'package:superheroes/pages/superhero_page.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/widgets/action_button.dart';
@@ -258,22 +259,44 @@ class ListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SuperheroCard(
-        superheroInfo: SuperheroInfo(
-          id: superhero.id,
-          name: superhero.name,
-          realName: superhero.realName,
-          imageUrl: superhero.imageUrl,
+      child: Dismissible(
+        key: ValueKey(superhero.id),
+        child: SuperheroCard(
+          superheroInfo: SuperheroInfo(
+            id: superhero.id,
+            name: superhero.name,
+            realName: superhero.realName,
+            imageUrl: superhero.imageUrl,
+            alignmentInfo: superhero.alignmentInfo,
+          ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SuperheroPage(id: superhero.id),
+              ),
+            );
+          },
         ),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => SuperheroPage(id: superhero.id),
+        background: Container(
+          height: 70,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: SuperheroesColors.red,
+          ),
+          child: Text(
+            'Remove from favorites'.toUpperCase(),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
             ),
-          );
-        },
+          ),
+        ),
+        onDismissed: (_) => bloc.removeFromFavorites(superhero.id),
       ),
     );
   }
@@ -290,8 +313,7 @@ class ListTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          left: 16, right: 16, top: 90, bottom: 12),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 90, bottom: 12),
       child: Text(
         title,
         style: TextStyle(
@@ -400,62 +422,6 @@ class LoadingError extends StatelessWidget {
   }
 }
 
-class Search extends StatelessWidget {
-  const Search({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 114),
-          Text(
-            'Search results',
-            style: TextStyle(
-                color: SuperheroesColors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w800),
-          ),
-          SizedBox(height: 20),
-          SuperheroCard(
-            superheroInfo: SuperheroInfo(
-              id: "70",
-              name: 'Batman',
-              realName: 'Bruce Wayne',
-              imageUrl:
-                  'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
-            ),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SuperheroPage(id: 'Batman'),
-              ),
-            ),
-          ),
-          SizedBox(height: 8),
-          SuperheroCard(
-            superheroInfo: SuperheroInfo(
-              id: "687",
-              name: 'Venom',
-              realName: 'Eddie Brock',
-              imageUrl:
-                  'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
-            ),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SuperheroPage(id: 'Venom'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class Favorites extends StatelessWidget {
   const Favorites({Key? key}) : super(key: key);
 
@@ -485,6 +451,7 @@ class Favorites extends StatelessWidget {
               realName: 'Bruce Wayne',
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+              alignmentInfo: AlignmentInfo.good,
             ),
             onTap: () => Navigator.push(
               context,
@@ -504,6 +471,7 @@ class Favorites extends StatelessWidget {
               realName: 'Tony Stark',
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',
+              alignmentInfo: AlignmentInfo.bad,
             ),
             onTap: () => Navigator.push(
               context,
