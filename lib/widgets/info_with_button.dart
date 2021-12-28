@@ -10,6 +10,7 @@ class InfoWithButton extends StatelessWidget {
   final double imageHeight;
   final double imageWidth;
   final double imageTopPadding;
+  final VoidCallback onTap;
 
   const InfoWithButton({
     Key? key,
@@ -20,6 +21,7 @@ class InfoWithButton extends StatelessWidget {
     required this.imageHeight,
     required this.imageWidth,
     required this.imageTopPadding,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class InfoWithButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
+          alignment: Alignment.topCenter,
           children: [
             Container(
               width: 108,
@@ -47,25 +50,27 @@ class InfoWithButton extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           title,
           style: TextStyle(
-              color: SuperheroesColors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w800),
+            color: SuperheroesColors.white,
+            fontSize: 32,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           subtitle.toUpperCase(),
           style: TextStyle(
-              color: SuperheroesColors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700),
+            color: SuperheroesColors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         ActionButton(
-          onTap: () => print('search'),
+          onTap: onTap,
           text: buttonText,
         ),
       ],
