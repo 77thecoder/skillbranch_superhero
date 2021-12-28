@@ -25,4 +25,28 @@ class Superhero {
       _$SuperheroFromJson(json);
 
   Map<String, dynamic> toJson() => _$SuperheroToJson(this);
+
+  @override
+  String toString() {
+    return 'Superhero{name: $name, biography: $biography, image: $image, powerstats: $powerstats, id: $id}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Superhero &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          biography == other.biography &&
+          image == other.image &&
+          powerstats == other.powerstats &&
+          id == other.id;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      biography.hashCode ^
+      image.hashCode ^
+      powerstats.hashCode ^
+      id.hashCode;
 }
